@@ -28,3 +28,4 @@ if ticker:
     except Exception as e:
         st.error("⚠️ Could not fetch data. Check your ticker or try again later.")
 
+
