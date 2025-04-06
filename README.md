@@ -1,2 +1,2 @@
 # stocktracking
-Tracking stocks 
+Streamlit app to track stocks. 
