@@ -23,8 +23,9 @@ def format_large_number(n):
     else:
         return str(n)
 
-def fetch_news_sentiment(symbol):
-    url = f"https://newsapi.org/v2/everything?q={symbol}&sortBy=publishedAt&apiKey={NEWS_API_KEY}&language=en"
+def fetch_news_sentiment(symbol, company_name):
+    query = f"{symbol} OR {company_name or symbol}"
+    url = f"https://newsapi.org/v2/everything?q={query}&sortBy=publishedAt&apiKey={NEWS_API_KEY}&language=en&domains=wsj.com,cnbc.com,bloomberg.com"
     try:
         response = requests.get(url)
         articles = response.json().get("articles", [])[:5]
@@ -114,7 +115,8 @@ if symbols:
 
         # News Sentiment Analysis
         st.markdown("**📰 Recent News Sentiment**")
-        sentiments = fetch_news_sentiment(symbol)
+        company_name = data.get("longName", symbol)
+        sentiments = fetch_news_sentiment(symbol, company_name)
         for headline, polarity in sentiments:
             sentiment_label = "🔺 Positive" if polarity > 0 else ("🔻 Negative" if polarity < 0 else "⚪ Neutral")
             st.write(f"{sentiment_label}: {headline}")
